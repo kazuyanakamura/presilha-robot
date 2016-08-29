@@ -7,7 +7,6 @@
 // Include Arduino.h, necessaria para as funcoes
 #include <Arduino.h>
 #include "./robo_mov.h"
-#include "../../robo_sensors/src/robo_sensors.h"
 
 /*******************************************************************************
  *

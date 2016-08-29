@@ -5,7 +5,6 @@
  ******************************************************************************/
 #include <Arduino.h>
 #include "./robo_sensors.h"
-#include "../../robo_mov/src/robo_mov.h"
 
 /*******************************************************************************
  *
@@ -31,6 +30,6 @@ void SENSORS_CheckAll(sensors_t* get_value){
 // do sensor e calibrar qual a tolerancia maxima (sujeira pode interferir na
 // leitura), para evitar leituras erradas
 void SENSORS_CalibrateLineSensor(int* min, int* max){
-  min = analogRead(LINE_FR_PIN);
-  max = min * 2;
+  *min = analogRead(LINE_FR_PIN);
+  *max = (*min) * 2;
 }

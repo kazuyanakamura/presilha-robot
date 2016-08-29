@@ -8,6 +8,8 @@
  *
  */
 
+#include <Arduino.h>
+
 /*******************************************************************************
  *
  * DEFINES
@@ -35,4 +37,4 @@ void WHEEL_SpinBack(void);
 void WHEEL_SpinRight(void);
 void WHEEL_SpinLeft(void);
 
-#endif _ROBO_MOV_H_
+#endif
