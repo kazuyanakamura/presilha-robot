@@ -7,3 +7,4 @@ LIBRARIES:
 
 NOTES:
 - Utilizar apenas as funcoes prontas para programar na int main()
+- Biblioteca TimerOne.h pode ser encontrado no Arduino Playground http://playground.arduino.cc/Code/Timer1
