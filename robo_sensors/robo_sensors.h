@@ -32,7 +32,7 @@
 
 void SENSORS_Start(void);
 
-void SENSORS_CheckAllSensors(sensors_t* get_value);
+void SENSORS_CheckAll(sensors_t* get_value);
 
 void SENSORS_CalibrateLineSensor(int* min, int* max);
 
