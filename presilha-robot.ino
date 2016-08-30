@@ -7,11 +7,11 @@
 // Esse delay pode parar a qualquer instante caso a variavel de controle nao bata com
 // o estado correto da maquina de estados. Ex: o Arduino tava no estado procurando,
 // mas achou linha branca, entao tem que mudar o estado 'procurando' pra 'recuando'
-char StateBasedDelay(int delay, char state_variable, char correct_state);
+char StateBasedDelay(int delay, char* state_variable, char correct_state);
 
 sensors_t sensores;
 
-int black_value, white_value;
+int black_floor, black_floor_limit;
 
 void setup(){
   WHEEL_Start();
@@ -24,7 +24,10 @@ void loop(){
 
 }
 
-char StateBasedDelay(int delay, char state_variable, char correct_state){
+// Delay capaz de parar a si mesmo. utilizar a sintaxe
+//
+// if(StateBasedDelay(arg1, arg2, arg3) == DELAY_FAILURE)
+char StateBasedDelay(int delay, char* state_variable, char correct_state){
   int i;
   for(i = 0; i < delay; i++){
     if(state_variable != correct_state){
