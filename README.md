@@ -3,7 +3,7 @@ Team Presilha FTW
 
 ##LIBRARIES:
 
-Todas as bibliotecas devem ir para o endereco padrao do Arduino, isto é, seu "YOUR_PATH/arduino-1.16.11/libraries" do computador
+Todas as bibliotecas devem ir para o endereco padrao do Arduino, isto é, seu "YOUR_PATH/arduino-1.16.11/libraries" do seu computador
 
 - **robo_mov.h**: contém as funcoes para acionar os motores e controlar o giro delas, mas nao o movimento em si
 - **robo_sensors.h**: contém as funcoes para ler os sensores e as variaveis que armazenam os valores (sensors_t)
@@ -12,11 +12,13 @@ Todas as bibliotecas devem ir para o endereco padrao do Arduino, isto é, seu "Y
 - Utilizar apenas as funcoes prontas para programar o motor e sensores na int main(). Se criar funcao nova, favor comentar para maior legibilidade
 - Biblioteca [TimerOne.h](http://playground.arduino.cc/Code/Timer1) pode ser encontrado no Arduino Playground. Usaremos ela pra ler os sensores constantemente
 - Se possível, usar o StateBasedDelay. Ele tem a capacidade de parar a qualquer momento se a condição não bater. Sua sintaxe é a seguinte:
+
 > char StateBasedDelay(int delay, char VARIAVEL_QUE_GUARDA_ESTADO, char ESTADO_QUE_DEVERIA_ESTAR);
 
 > A vantagem de usar essa função é a que se a VARIAVEL_QUE_GUARDA_ESTADO != ESTADO_QUE_DEVERIA_ESTAR, o delay para de rodar.
 
 > Exemplo de uso: if(StateBasedDelay(1000) == DELAY_FAILURE){ // Codigo }
+
 - Todas as funcoes das bibliotecas criadas estão neste README
 
 ##PINOS:
