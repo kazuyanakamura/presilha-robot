@@ -1,7 +1,7 @@
 #ifndef _ROBO_SENSORS_H_
 #define _ROBO_SENSORS_H_
 
-// Nota: 
+// Nota:
 // - O sensor de infravermelho tem valor 0 (LOW) quando detecta um obstaculo
 // - Criar variavel para armazenar leitura de preto, e poder calibrar a leitura
 // do sensor
@@ -30,10 +30,10 @@
  *
  ******************************************************************************/
 
-void SENSORS_Start(void);
+void StartSensors(void);
 
-void SENSORS_CheckAll(sensors_t* get_value);
+void CheckAllSensors(sensors_t* get_value);
 
-void SENSORS_CalibrateLineSensor(int* min, int* max);
+void CalibrateLineSensor(int* black, int* white);
 
 #endif

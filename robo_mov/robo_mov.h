@@ -30,11 +30,11 @@
 
 // Estas funcoes controlam o sentido de giro das rodas, mas nao controlam a
 // duracao do giro
-void WHEEL_Start(void);
-void WHEEL_DisableSpin(void);
-void WHEEL_SpinAhead(void);
-void WHEEL_SpinBack(void);
-void WHEEL_SpinRight(void);
-void WHEEL_SpinLeft(void);
+void StartMovement(void);
+void DisableMovement(void);
+void MoveFoward(void);
+void MoveBack(void);
+void MoveRight(void);
+void MoveLeft(void);
 
 #endif

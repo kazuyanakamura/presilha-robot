@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 // Inicializa as rodas, todas paradas
-void WHEEL_Start(void){
+void StartMovement(void){
   pinMode(RIGHT_WHEEL_PIN_1, OUTPUT);
   pinMode(RIGHT_WHEEL_PIN_2, OUTPUT);
   pinMode(LEFT_WHEEL_PIN_1, OUTPUT);
@@ -28,7 +28,7 @@ void WHEEL_Start(void){
 }
 
 // Desativa as pontes H, impedindo o motor de girar
-void WHEEL_DisableSpin(void){
+void DisableMovement(void){
   digitalWrite(RIGHT_WHEEL_PIN_1, LOW);
   digitalWrite(RIGHT_WHEEL_PIN_2, LOW);
   digitalWrite(LEFT_WHEEL_PIN_1, LOW);
@@ -36,7 +36,7 @@ void WHEEL_DisableSpin(void){
 }
 
 // Esta funcao faz as rodas girarem para a frente
-void WHEEL_SpinAhead(void){
+void MoveFoward(void){
   digitalWrite(RIGHT_WHEEL_PIN_1, HIGH);
   digitalWrite(RIGHT_WHEEL_PIN_2, LOW);
   digitalWrite(LEFT_WHEEL_PIN_1, HIGH);
@@ -44,7 +44,7 @@ void WHEEL_SpinAhead(void){
 }
 
 // Esta funcao faz as rodas girarem para tras
-void WHEEL_SpinBack(void){
+void MoveBack(void){
   digitalWrite(RIGHT_WHEEL_PIN_1, LOW);
   digitalWrite(RIGHT_WHEEL_PIN_2, HIGH);
   digitalWrite(LEFT_WHEEL_PIN_1, LOW);
@@ -53,7 +53,7 @@ void WHEEL_SpinBack(void){
 
 // Esta funcao alterna o giro das rodas, fazendo o robo girar em seu proprio
 // eixo no sentido horario
-void WHEEL_SpinRight(void){
+void MoveRight(void){
   digitalWrite(RIGHT_WHEEL_PIN_1, HIGH);
   digitalWrite(RIGHT_WHEEL_PIN_2, LOW);
   digitalWrite(LEFT_WHEEL_PIN_1, LOW);
@@ -62,7 +62,7 @@ void WHEEL_SpinRight(void){
 
 // Esta funcao alterna o giro das rodas, fazendo o robo girar em seu proprio
 // eixo no sentido anti-horario
-void WHEEL_SpinLeft(void){
+void MoveLeft(void){
   digitalWrite(RIGHT_WHEEL_PIN_1, LOW);
   digitalWrite(RIGHT_WHEEL_PIN_2, HIGH);
   digitalWrite(LEFT_WHEEL_PIN_1, HIGH);
