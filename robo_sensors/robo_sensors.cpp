@@ -18,7 +18,7 @@ void StartSensors(void){
 
 // Pega os valores lidos por cada porta e atribui os valores aos
 // devidos ponteiros
-void CheckAllSensors(sensors_t* get_value){
+void CheckAllSensors(volatile sensors_t* get_value){
   get_value->line_fr = analogRead(LINE_FR_PIN);
   get_value->line_fl = analogRead(LINE_FL_PIN);
   get_value->line_br = analogRead(LINE_BR_PIN);

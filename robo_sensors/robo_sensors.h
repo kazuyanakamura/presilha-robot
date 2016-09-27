@@ -32,7 +32,7 @@
 
 void StartSensors(void);
 
-void CheckAllSensors(sensors_t* get_value);
+void CheckAllSensors(volatile sensors_t* get_value);
 
 void CalibrateLineSensor(int* black, int* white);
 

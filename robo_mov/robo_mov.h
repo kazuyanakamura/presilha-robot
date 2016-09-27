@@ -17,8 +17,8 @@
 ******************************************************************************/
 
 // Definicoes sobre os pinos que ativam as rodas
-#define LEFT_WHEEL_PIN_1 1
-#define LEFT_WHEEL_PIN_2 0
+#define LEFT_WHEEL_PIN_1 10
+#define LEFT_WHEEL_PIN_2 11
 #define RIGHT_WHEEL_PIN_1 8
 #define RIGHT_WHEEL_PIN_2 9
 
