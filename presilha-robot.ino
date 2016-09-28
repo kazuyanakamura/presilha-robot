@@ -52,6 +52,7 @@ int black_floor, white_line;
  ******************************************************************************/
 
 void setup(){
+  //Serial.begin(9600);
   // Periodo para o timer, em us (100 ms)
   Timer1.initialize(100000);
   // Informa ao timer para executar a funcao callback() periodicamente
@@ -75,6 +76,12 @@ void setup(){
 
 void loop(){
   Move(&estado_robo);
+  /*
+  MoveFoward();
+  delay(2000);
+  MoveBack();
+  delay(2000);
+  */
 }
 
 /*******************************************************************************
@@ -92,12 +99,13 @@ void Timer1Callback(void){
 // Delay capaz de parar a si mesmo. Utilizar a seguinte sintaxe
 //
 // if(StateBasedDelay(arg1, arg2, arg3) == DELAY_FAILURE)
-char StateBasedDelay(int delay, volatile char *state_variable, char correct_state){
+char StateBasedDelay(int delay_in, volatile char *state_variable, char correct_state){
   int i;
-  for(i = 0; i < delay; i++){
+  for(i = 0; i < delay_in; i++){
     if(*state_variable != correct_state){
       return DELAY_FAILURE;
     }
+    delay(1);
   }
 
   return DELAY_SUCCESS;
@@ -105,22 +113,31 @@ char StateBasedDelay(int delay, volatile char *state_variable, char correct_stat
 
 // Funcao responsavel pela logica da maquina de estados do robo
 char Think(volatile sensors_t *valores){
-  // A prioridade maior deve ser para a linha branca do ringue, e depois para o resto
+ // A prioridade maior deve ser para a linha branca do ringue, e depois para o resto
+
+ // Serial.println(valores->line_fr);
+ // Serial.println(valores->line_fl);
+ //Serial.println(valores->line_br);
+ //Serial.println(valores->line_bl);
   
   // Verifica se encontrou a linha branca na frente do robo
   if((valores->line_fr <= white_line) || (valores->line_fl <= white_line)){
+    //Serial.println("linha frente\n");
     return LINHA_BRANCA_FRENTE_ENCONTRADA;
 
   // Verifica se encontrou a linha branca atras do robo
   }else if((valores->line_br <= white_line) || (valores->line_bl <= white_line)){
+    //Serial.println("linha atras\n");
     return LINHA_BRANCA_ATRAS_ENCONTRADA;
     
   // Verifica se o sensor retornou um valor alto, ou seja, 
   }else if(valores->ir == IR_FOUND_OBJECT){
+   // Serial.println("alvo\n");
     return ALVO_ENCONTRADO;
 
   // Se tudo falhar, deve voltar a procurar o alvo
   }else{
+    //Serial.println("procurando\n");
     return PROCURANDO_ALVO;
   }
 }

@@ -16,75 +16,75 @@
 
 // Inicializa as rodas, todas paradas
 void StartMovement(void){
-  pinMode(RIGHT_WHEEL_PIN_1, OUTPUT);
-  pinMode(RIGHT_WHEEL_PIN_2, OUTPUT);
-  pinMode(LEFT_WHEEL_PIN_1, OUTPUT);
-  pinMode(LEFT_WHEEL_PIN_2, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
 
-  digitalWrite(RIGHT_WHEEL_PIN_1, LOW);
-  digitalWrite(RIGHT_WHEEL_PIN_2, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_1, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_2, LOW);
+  digitalWrite(8, LOW);
+  digitalWrite(9, LOW);
+  digitalWrite(10, LOW);
+  digitalWrite(11, LOW);
 }
 
 // Desativa as pontes H, impedindo o motor de girar
 void DisableMovement(void){
-  digitalWrite(RIGHT_WHEEL_PIN_1, LOW);
-  digitalWrite(RIGHT_WHEEL_PIN_2, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_1, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_2, LOW);
+  digitalWrite(8, LOW);
+  digitalWrite(9, LOW);
+  digitalWrite(10, LOW);
+  digitalWrite(11, LOW);
 }
 
 // Esta funcao faz as rodas girarem para a frente
 void MoveFoward(void){
-  digitalWrite(RIGHT_WHEEL_PIN_1, LOW);
-  digitalWrite(RIGHT_WHEEL_PIN_2, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_1, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_2, LOW);
+  digitalWrite(8, LOW);
+  digitalWrite(9, LOW);
+  digitalWrite(10, LOW);
+  digitalWrite(11, LOW);
   delay(100);
-  digitalWrite(RIGHT_WHEEL_PIN_1, HIGH);
-  digitalWrite(RIGHT_WHEEL_PIN_2, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_1, HIGH);
-  digitalWrite(LEFT_WHEEL_PIN_2, LOW);
+  digitalWrite(8, HIGH);
+  digitalWrite(9, LOW);
+  digitalWrite(10, LOW);
+  digitalWrite(11, HIGH);
 }
 
 // Esta funcao faz as rodas girarem para tras
 void MoveBack(void){
-  digitalWrite(RIGHT_WHEEL_PIN_1, LOW);
-  digitalWrite(RIGHT_WHEEL_PIN_2, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_1, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_2, LOW);
+  digitalWrite(8, LOW);
+  digitalWrite(9, LOW);
+  digitalWrite(10, LOW);
+  digitalWrite(11, LOW);
   delay(100);
-  digitalWrite(RIGHT_WHEEL_PIN_1, LOW);
-  digitalWrite(RIGHT_WHEEL_PIN_2, HIGH);
-  digitalWrite(LEFT_WHEEL_PIN_1, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_2, HIGH);
+  digitalWrite(8, LOW);
+  digitalWrite(9, HIGH);
+  digitalWrite(10, HIGH);
+  digitalWrite(11, LOW);
 }
 
 // Esta funcao alterna o giro das rodas, fazendo o robo girar em seu proprio
 // eixo no sentido horario
 void MoveRight(void){
-  digitalWrite(RIGHT_WHEEL_PIN_1, LOW);
-  digitalWrite(RIGHT_WHEEL_PIN_2, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_1, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_2, LOW);
+  digitalWrite(8, LOW);
+  digitalWrite(9, LOW);
+  digitalWrite(10, LOW);
+  digitalWrite(11, LOW);
   delay(100);
-  digitalWrite(RIGHT_WHEEL_PIN_1, HIGH);
-  digitalWrite(RIGHT_WHEEL_PIN_2, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_1, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_2, HIGH);
+  digitalWrite(8, LOW);
+  digitalWrite(9, HIGH);
+  digitalWrite(10, LOW);
+  digitalWrite(11, HIGH);
 }
 
 // Esta funcao alterna o giro das rodas, fazendo o robo girar em seu proprio
 // eixo no sentido anti-horario
 void MoveLeft(void){
-  digitalWrite(RIGHT_WHEEL_PIN_1, LOW);
-  digitalWrite(RIGHT_WHEEL_PIN_2, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_1, LOW);
-  digitalWrite(LEFT_WHEEL_PIN_2, LOW);
+  digitalWrite(8, LOW);
+  digitalWrite(9, LOW);
+  digitalWrite(10, LOW);
+  digitalWrite(11, LOW);
   delay(100);
-  digitalWrite(RIGHT_WHEEL_PIN_1, LOW);
-  digitalWrite(RIGHT_WHEEL_PIN_2, HIGH);
-  digitalWrite(LEFT_WHEEL_PIN_1, HIGH);
-  digitalWrite(LEFT_WHEEL_PIN_2, LOW);
+  digitalWrite(8, HIGH);
+  digitalWrite(9, LOW);
+  digitalWrite(10, HIGH);
+  digitalWrite(11, LOW);
 }
