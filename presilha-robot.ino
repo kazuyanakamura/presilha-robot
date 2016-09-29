@@ -7,7 +7,11 @@
  * DEFINES
  *
  ******************************************************************************/
-#define DEBUG 0
+#define DEBUG_SETUP_PRINT 0
+#define DEBUG_SENSOR_IR 0
+#define DEBUG_SENSOR_US 0
+#define DEBUG_SENSOR_LN 0
+#define DEBUG_STATUS 0
 
 #define DELAY_FAILURE 0
 #define DELAY_SUCCESS 1
@@ -56,24 +60,21 @@ int black_floor, white_line;
  ******************************************************************************/
 
 void setup(){
-#if DEBUG
+  #if DEBUG_SETUP_PRINT
   Serial.begin(9600);
-  for(int i = 0; i < 10; i++) Serial.println("BIRL!");
-#endif
-  
-  // Periodo para o timer, em us (100 ms)
-  //Timer1.initialize(10000);
-  // Informa ao timer para executar a funcao callback() periodicamente
-  //Timer1.attachInterrupt(Timer1Callback);
-   MsTimer2::set(10, Timer1Callback); // 500ms period
+  Serial.println("BIRL!");
+  #endif
+
+  // Periodo para o timer, em us (10 ms)
+  MsTimer2::set(10, Timer1Callback); // 500ms period
   MsTimer2::start();
-  
+
   // Inicializa os pinos das rodas e dos sensores, e calibra os sensores de
   // acordo com o que foi lido no piso, para evitar erros
   StartMovement();
   StartSensors();
   CalibrateLineSensor(&black_floor, &white_line);
-  
+
   // Tempo de espera obrigatório
   //delay(3500);
 }
@@ -86,12 +87,6 @@ void setup(){
 
 void loop(){
   Move(&estado_robo);
-  /*
-  MoveFoward();
-  delay(2000);
-  MoveBack();
-  delay(2000);
-  */
 }
 
 /*******************************************************************************
@@ -107,8 +102,7 @@ void Timer1Callback(void){
 }
 
 // Delay capaz de parar a si mesmo. Utilizar a seguinte sintaxe
-//
-// if(StateBasedDelay(arg1, arg2, arg3) == DELAY_FAILURE)
+
 char StateBasedDelay(int delay_in, volatile char *state_variable, char correct_state){
   int i;
   for(i = 0; i < delay_in; i++){
@@ -117,15 +111,15 @@ char StateBasedDelay(int delay_in, volatile char *state_variable, char correct_s
     }
     delay(1);
   }
-
   return DELAY_SUCCESS;
 }
 
 // Funcao responsavel pela logica da maquina de estados do robo
+
 char Think(volatile sensors_t *valores, volatile char *status){
   // A prioridade maior deve ser para a linha branca do ringue, e depois para o resto
 
-#if DEBUG
+  #if DEBUG_SENSOR_LN
   Serial.print("br: ");
   Serial.print(valores->line_fr);
   Serial.print(" | bl: ");
@@ -133,57 +127,64 @@ char Think(volatile sensors_t *valores, volatile char *status){
   Serial.print(" | fr: ");
   Serial.print(valores->line_br);
   Serial.print(" | fl: ");
-  Serial.print(valores->line_bl);
-  Serial.print(" | us: ");
-  Serial.print(valores->us);
-  Serial.print("\n\n");
-#endif
-  
-  if(*status == RECUANDO){
-#if DEBUG
-  Serial.println("recuando\n");
-#endif
+  Serial.println(valores->line_bl);
+  #endif
+
+  #if DEBUG_SENSOR_US
+  Serial.print("us: ");
+  Serial.println(valores->us);
+  #endif
+
+  #if DEBUG_SENSOR_IR
+  Serial.print("ir: ");
+  Serial.println((int) valores->ir);
+  #endif
+
+  if (*status == RECUANDO) {
+    #if DEBUG_STATUS
+    Serial.println("recuando\n");
+    #endif
+
     return RECUANDO;
-    
-  }else if(*status == AVANCANDO){
-#if DEBUG
-  Serial.println("avancando\n");
-#endif
+  } else if (*status == AVANCANDO) {
+    #if DEBUG_STATUS
+    Serial.println("avancando\n");
+    #endif
+
     return AVANCANDO;
-  }
-  // Verifica se encontrou a linha branca na frente do robo
-  else if((valores->line_fr <= white_line) || (valores->line_fl <= white_line)){
-#if DEBUG
-  Serial.print("linha frente");
-#endif
+  } else if ((valores->line_fr <= white_line) || (valores->line_fl <= white_line)) {
+    // Verifica se encontrou a linha branca na frente do robo
+    #if DEBUG
+    Serial.println("linha frente");
+    #endif
+
     return LINHA_BRANCA_FRENTE_ENCONTRADA;
+    // Verifica se encontrou a linha branca atras do robo
+  } else if ((valores->line_br <= white_line) || (valores->line_bl <= white_line)) {
+    #if DEBUG_STATUS
+    Serial.println("linha atras\n");
+    #endif
 
-  // Verifica se encontrou a linha branca atras do robo
-  }else if((valores->line_br <= white_line) || (valores->line_bl <= white_line)){
-#if DEBUG
-  Serial.print("linha atras\n");
-#endif
     return LINHA_BRANCA_ATRAS_ENCONTRADA;
-    
-  // Verifica se o sensor retornou um valor alto, ou seja, 
-  }else if(valores->ir == IR_FOUND_OBJECT){
-#if DEBUG
-  Serial.print("alvo_ir\n");
-#endif
+    // Verifica se o sensor retornou um valor alto, ou seja,
+  } else if(valores->ir == IR_FOUND_OBJECT) {
+    #if DEBUG_STATUS
+    Serial.print("found with ir\n");
+    #endif
+
     return ALVO_ENCONTRADO_IR;
+  } else if((valores->us <= 60) && valores->us > 0) {
+    #if DEBUG_STATUS
+      Serial.println("found with us\n");
+    #endif
 
-  }else if((valores->us <= 60) && valores->us > 0){
-#if DEBUG
-  Serial.println("alvo_us\n");
-#endif
     return ALVO_ENCONTRADO_US;
+    // Se tudo falhar, deve voltar a procurar o alvo
+  } else {
+    #if DEBUG_STATUS
+    Serial.print("searching\n");
+    #endif
 
-  // Se tudo falhar, deve voltar a procurar o alvo
-  
-  }else{
-#if DEBUG
-  Serial.print("procurando\n");
-#endif
     return PROCURANDO_ALVO;
   }
 }
@@ -201,7 +202,7 @@ void Move(volatile char *estado){
         break;
       }
       *estado = PROCURANDO_ALVO;
-      
+
       break;
 
     case LINHA_BRANCA_ATRAS_ENCONTRADA:
@@ -230,7 +231,7 @@ void Move(volatile char *estado){
     case ALVO_ENCONTRADO_US:
       MoveFoward();
       while(StateBasedDelay(1000, estado, ALVO_ENCONTRADO_US) != DELAY_FAILURE);
-      
+
       break;
 
     // Para procurar o alvo, o robo fara um movimento de zigue-zague no ringue
@@ -252,13 +253,13 @@ void Move(volatile char *estado){
       if(StateBasedDelay(1000, estado, PROCURANDO_ALVO) == DELAY_FAILURE){
         break;
       }
-      
+
       // Se nao achar nada, procura pra esquerda
       MoveRight();
       if(StateBasedDelay(200, estado, PROCURANDO_ALVO) == DELAY_FAILURE){
         break;
       }
-      
+
       // PROCURANDO_ALVO
       break;
 
