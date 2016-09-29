@@ -17,6 +17,8 @@
 
 #define IR_FOUND_OBJECT LOW
 #define IR_NOTHING_FOUND HIGH
+#define US_MAX_RANGE 80
+#define US_MIN_RANGE 1
 
 #define LINE_FR_PIN A2
 #define LINE_FL_PIN A3

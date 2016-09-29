@@ -7,22 +7,25 @@
  * DEFINES
  *
  ******************************************************************************/
+
+// DEFINES TO DEBUG
 #define DEBUG_SETUP_PRINT 0
-#define DEBUG_SENSOR_IR 0
-#define DEBUG_SENSOR_US 0
-#define DEBUG_SENSOR_LN 0
-#define DEBUG_STATUS 0
+#define DEBUG_SENSOR_IR   0
+#define DEBUG_SENSOR_US   0
+#define DEBUG_SENSOR_LN   0
+#define DEBUG_STATUS      0
 
 #define DELAY_FAILURE 0
 #define DELAY_SUCCESS 1
 
-#define LINHA_BRANCA_FRENTE_ENCONTRADA 0
-#define LINHA_BRANCA_ATRAS_ENCONTRADA 1
-#define ALVO_ENCONTRADO_IR 2
-#define PROCURANDO_ALVO 3
-#define RECUANDO 4
-#define AVANCANDO 5
-#define ALVO_ENCONTRADO_US 6
+// DEFINE STATE MACHINE
+#define LINHA_BRANCA_FRENTE_ENCONTRADA  0
+#define LINHA_BRANCA_ATRAS_ENCONTRADA   1
+#define ALVO_ENCONTRADO_IR              2
+#define PROCURANDO_ALVO                 3
+#define RECUANDO                        4
+#define AVANCANDO                       5
+#define ALVO_ENCONTRADO_US              6
 
 /*******************************************************************************
  *
@@ -173,7 +176,7 @@ char Think(volatile sensors_t *valores, volatile char *status){
     #endif
 
     return ALVO_ENCONTRADO_IR;
-  } else if((valores->us <= 60) && valores->us > 0) {
+  } else if((valores->us <= US_MAX_RANGE) && valores->us >= US_MIN_RANGE) {
     #if DEBUG_STATUS
       Serial.println("found with us\n");
     #endif
