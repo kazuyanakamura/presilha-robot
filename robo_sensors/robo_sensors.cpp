@@ -14,6 +14,8 @@
 
 void StartSensors(void){
   pinMode(IR_PIN, INPUT);
+  pinMode(US_TRIGGER_PIN, OUTPUT);
+  pinMode(US_ECHO_PIN, INPUT);
 }
 
 // Pega os valores lidos por cada porta e atribui os valores aos
@@ -24,6 +26,7 @@ void CheckAllSensors(volatile sensors_t* get_value){
   get_value->line_br = analogRead(LINE_BR_PIN);
   get_value->line_bl = analogRead(LINE_BL_PIN);
   get_value->ir = digitalRead(IR_PIN);
+  get_value->us = ReadUltrasonicSensor(US_TRIGGER_PIN, US_ECHO_PIN);
 }
 
 // Importante chamar essa funcao no comeco do codigo para ter uma ideia da
@@ -31,5 +34,28 @@ void CheckAllSensors(volatile sensors_t* get_value){
 // leitura), para evitar leituras erradas
 void CalibrateLineSensor(int* black, int* white){
   *black = analogRead(LINE_FR_PIN);
-  *white = *black - 511;
+  *white = *black - 300;
+}
+
+int ReadUltrasonicSensor(char trigg, char echo){
+  int ultrasonic_response_time, i = 0;
+
+  digitalWrite(US_TRIGGER_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(US_TRIGGER_PIN, LOW);
+
+  ultrasonic_response_time = millis();
+
+  while(digitalRead(US_ECHO_PIN) != HIGH){
+    if(i++ > 1000){
+      return 0;
+    }
+    delayMicroseconds(1);
+  }
+
+  ultrasonic_response_time = millis() - ultrasonic_response_time;
+
+  ultrasonic_response_time /= 58.0;
+
+  return ultrasonic_response_time;
 }

@@ -42,10 +42,10 @@ void MoveFoward(void){
   digitalWrite(10, LOW);
   digitalWrite(11, LOW);
   delay(100);
-  digitalWrite(8, HIGH);
-  digitalWrite(9, LOW);
-  digitalWrite(10, LOW);
-  digitalWrite(11, HIGH);
+  digitalWrite(8, LOW);
+  digitalWrite(9, HIGH);
+  digitalWrite(10, HIGH);
+  digitalWrite(11, LOW);
 }
 
 // Esta funcao faz as rodas girarem para tras
@@ -55,10 +55,10 @@ void MoveBack(void){
   digitalWrite(10, LOW);
   digitalWrite(11, LOW);
   delay(100);
-  digitalWrite(8, LOW);
-  digitalWrite(9, HIGH);
-  digitalWrite(10, HIGH);
-  digitalWrite(11, LOW);
+  digitalWrite(8, HIGH);
+  digitalWrite(9, LOW);
+  digitalWrite(10, LOW);
+  digitalWrite(11, HIGH);
 }
 
 // Esta funcao alterna o giro das rodas, fazendo o robo girar em seu proprio
@@ -69,10 +69,10 @@ void MoveRight(void){
   digitalWrite(10, LOW);
   digitalWrite(11, LOW);
   delay(100);
-  digitalWrite(8, LOW);
-  digitalWrite(9, HIGH);
-  digitalWrite(10, LOW);
-  digitalWrite(11, HIGH);
+  digitalWrite(8, HIGH);
+  digitalWrite(9, LOW);
+  digitalWrite(10, HIGH);
+  digitalWrite(11, LOW);
 }
 
 // Esta funcao alterna o giro das rodas, fazendo o robo girar em seu proprio
@@ -83,8 +83,8 @@ void MoveLeft(void){
   digitalWrite(10, LOW);
   digitalWrite(11, LOW);
   delay(100);
-  digitalWrite(8, HIGH);
-  digitalWrite(9, LOW);
-  digitalWrite(10, HIGH);
-  digitalWrite(11, LOW);
+  digitalWrite(8, LOW);
+  digitalWrite(9, HIGH);
+  digitalWrite(10, LOW);
+  digitalWrite(11, HIGH);
 }

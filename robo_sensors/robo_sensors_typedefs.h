@@ -25,6 +25,7 @@ typedef struct{
   int line_br;
   int line_bl;
   char ir;
+  int us;
 }sensors_t;
 
 #endif

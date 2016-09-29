@@ -18,11 +18,13 @@
 #define IR_FOUND_OBJECT LOW
 #define IR_NOTHING_FOUND HIGH
 
-#define LINE_FR_PIN A0
-#define LINE_FL_PIN A1
-#define LINE_BR_PIN A2
-#define LINE_BL_PIN A3
+#define LINE_FR_PIN A2
+#define LINE_FL_PIN A3
+#define LINE_BR_PIN A0
+#define LINE_BL_PIN A1
 #define IR_PIN 4
+#define US_TRIGGER_PIN 3
+#define US_ECHO_PIN 2
 
 /*******************************************************************************
  *
@@ -35,5 +37,7 @@ void StartSensors(void);
 void CheckAllSensors(volatile sensors_t* get_value);
 
 void CalibrateLineSensor(int* black, int* white);
+
+int ReadUltrasonicSensor(char trigg, char echo);
 
 #endif
