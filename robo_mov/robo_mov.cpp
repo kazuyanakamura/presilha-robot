@@ -33,15 +33,11 @@ void DisableMovement(void){
   digitalWrite(9, LOW);
   digitalWrite(10, LOW);
   digitalWrite(11, LOW);
+  delay(100);
 }
 
 // Esta funcao faz as rodas girarem para a frente
 void MoveFoward(void){
-  digitalWrite(8, LOW);
-  digitalWrite(9, LOW);
-  digitalWrite(10, LOW);
-  digitalWrite(11, LOW);
-  delay(100);
   digitalWrite(8, LOW);
   digitalWrite(9, HIGH);
   digitalWrite(10, HIGH);
@@ -50,11 +46,6 @@ void MoveFoward(void){
 
 // Esta funcao faz as rodas girarem para tras
 void MoveBack(void){
-  digitalWrite(8, LOW);
-  digitalWrite(9, LOW);
-  digitalWrite(10, LOW);
-  digitalWrite(11, LOW);
-  delay(100);
   digitalWrite(8, HIGH);
   digitalWrite(9, LOW);
   digitalWrite(10, LOW);
@@ -64,11 +55,6 @@ void MoveBack(void){
 // Esta funcao alterna o giro das rodas, fazendo o robo girar em seu proprio
 // eixo no sentido horario
 void MoveRight(void){
-  digitalWrite(8, LOW);
-  digitalWrite(9, LOW);
-  digitalWrite(10, LOW);
-  digitalWrite(11, LOW);
-  delay(100);
   digitalWrite(8, HIGH);
   digitalWrite(9, LOW);
   digitalWrite(10, HIGH);
@@ -78,11 +64,6 @@ void MoveRight(void){
 // Esta funcao alterna o giro das rodas, fazendo o robo girar em seu proprio
 // eixo no sentido anti-horario
 void MoveLeft(void){
-  digitalWrite(8, LOW);
-  digitalWrite(9, LOW);
-  digitalWrite(10, LOW);
-  digitalWrite(11, LOW);
-  delay(100);
   digitalWrite(8, LOW);
   digitalWrite(9, HIGH);
   digitalWrite(10, LOW);

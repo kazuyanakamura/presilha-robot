@@ -8,7 +8,7 @@
  *
  ******************************************************************************/
 
-// DEFINES TO DEBUG
+// DEFINES TO DEBUG PRINTS
 #define DEBUG_SETUP_PRINT 0
 #define DEBUG_SENSOR_IR   0
 #define DEBUG_SENSOR_US   0
@@ -64,7 +64,7 @@ int black_floor, white_line;
 
 void setup(){
   #if DEBUG_SETUP_PRINT
-  Serial.begin(9600);
+  Serial.begin(2400);
   Serial.println("BIRL!");
   #endif
 
@@ -241,29 +241,28 @@ void Move(volatile char *estado){
     case PROCURANDO_ALVO:
       // Move pra frente
       MoveFoward();
-      if(StateBasedDelay(1000, estado, PROCURANDO_ALVO) == DELAY_FAILURE){
+      if(StateBasedDelay(700, estado, PROCURANDO_ALVO) == DELAY_FAILURE){
         break;
       }
 
       // Se nao achar nada, procura pra direita
       MoveLeft();
-      if(StateBasedDelay(200, estado, PROCURANDO_ALVO) == DELAY_FAILURE){
+      if(StateBasedDelay(150, estado, PROCURANDO_ALVO) == DELAY_FAILURE){
         break;
       }
 
       // Move pra frente
       MoveFoward();
-      if(StateBasedDelay(1000, estado, PROCURANDO_ALVO) == DELAY_FAILURE){
+      if(StateBasedDelay(700, estado, PROCURANDO_ALVO) == DELAY_FAILURE){
         break;
       }
 
       // Se nao achar nada, procura pra esquerda
       MoveRight();
-      if(StateBasedDelay(200, estado, PROCURANDO_ALVO) == DELAY_FAILURE){
+      if(StateBasedDelay(150, estado, PROCURANDO_ALVO) == DELAY_FAILURE){
         break;
       }
 
-      // PROCURANDO_ALVO
       break;
 
     default:
