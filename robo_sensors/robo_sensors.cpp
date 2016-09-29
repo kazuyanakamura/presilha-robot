@@ -38,22 +38,13 @@ void CalibrateLineSensor(int* black, int* white){
 }
 
 int ReadUltrasonicSensor(char trigg, char echo){
-  int ultrasonic_response_time, i = 0;
+  int ultrasonic_response_time;
 
   digitalWrite(US_TRIGGER_PIN, HIGH);
   delayMicroseconds(10);
   digitalWrite(US_TRIGGER_PIN, LOW);
 
-  ultrasonic_response_time = millis();
-
-  while(digitalRead(US_ECHO_PIN) != HIGH){
-    if(i++ > 1000){
-      return 0;
-    }
-    delayMicroseconds(1);
-  }
-
-  ultrasonic_response_time = millis() - ultrasonic_response_time;
+  ultrasonic_response_time = pulseIn(US_ECHO_PIN,HIGH);
 
   ultrasonic_response_time /= 58.0;
 
