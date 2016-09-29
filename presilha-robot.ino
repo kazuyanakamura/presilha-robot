@@ -123,23 +123,23 @@ char Think(volatile sensors_t *valores, volatile char *status){
   // A prioridade maior deve ser para a linha branca do ringue, e depois para o resto
 
   #if DEBUG_SENSOR_LN
-  Serial.print("br: ");
-  Serial.print(valores->line_fr);
-  Serial.print(" | bl: ");
-  Serial.print(valores->line_fl);
-  Serial.print(" | fr: ");
-  Serial.print(valores->line_br);
-  Serial.print(" | fl: ");
+  Serial.print("Front Right: ");
+  Serial.println(valores->line_fr);
+  Serial.print("Front Left: ");
+  Serial.println(valores->line_fl);
+  Serial.print("Back Right: ");
+  Serial.println(valores->line_br);
+  Serial.print("Back Left: ");
   Serial.println(valores->line_bl);
   #endif
 
   #if DEBUG_SENSOR_US
-  Serial.print("us: ");
+  Serial.print("Ultrassonic Sensor: ");
   Serial.println(valores->us);
   #endif
 
   #if DEBUG_SENSOR_IR
-  Serial.print("ir: ");
+  Serial.print("Infrared Sensor: ");
   Serial.println((int) valores->ir);
   #endif
 
