@@ -25,7 +25,9 @@ typedef struct{
   int line_br;
   int line_bl;
   char ir;
+#if ULTRASONIC
   int us;
+#endif
 }sensors_t;
 
 #endif

@@ -26,7 +26,9 @@ void CheckAllSensors(volatile sensors_t* get_value){
   get_value->line_br = analogRead(LINE_BR_PIN);
   get_value->line_bl = analogRead(LINE_BL_PIN);
   get_value->ir = digitalRead(IR_PIN);
+#if ULTRASONIC
   get_value->us = ReadUltrasonicSensor(US_TRIGGER_PIN, US_ECHO_PIN);
+#endif
 }
 
 // Importante chamar essa funcao no comeco do codigo para ter uma ideia da
@@ -37,25 +39,23 @@ void CalibrateLineSensor(int* black, int* white){
   *white = *black - 300;
 }
 
+#if ULTRASONIC
 int ReadUltrasonicSensor(char trigg, char echo){
   int ultrasonic_response_time, i = 0;
 
   digitalWrite(US_TRIGGER_PIN, HIGH);
   delayMicroseconds(10);
   digitalWrite(US_TRIGGER_PIN, LOW);
-
-  ultrasonic_response_time = millis();
-
-  while(digitalRead(US_ECHO_PIN) != HIGH){
-    if(i++ > 1000){
-      return 0;
-    }
-    delayMicroseconds(1);
-  }
-
-  ultrasonic_response_time = millis() - ultrasonic_response_time;
+  
+  ultrasonic_response_time = pulseIn(US_ECHO_PIN, HIGH);
+#if DEBUG
+  Serial.print("us_response: ");
+  Serial.println(ultrasonic_response_time);
+#endif
 
   ultrasonic_response_time /= 58.0;
 
   return ultrasonic_response_time;
 }
+#endif
+

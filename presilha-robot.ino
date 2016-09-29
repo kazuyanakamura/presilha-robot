@@ -7,7 +7,10 @@
  * DEFINES
  *
  ******************************************************************************/
+
+// Defines para debugs
 #define DEBUG 0
+#define ULTRASONIC 0
 
 #define DELAY_FAILURE 0
 #define DELAY_SUCCESS 1
@@ -60,20 +63,20 @@ void setup(){
   Serial.begin(9600);
   for(int i = 0; i < 10; i++) Serial.println("BIRL!");
 #endif
-  
+
   // Periodo para o timer, em us (100 ms)
   //Timer1.initialize(10000);
   // Informa ao timer para executar a funcao callback() periodicamente
   //Timer1.attachInterrupt(Timer1Callback);
-   MsTimer2::set(10, Timer1Callback); // 500ms period
+  MsTimer2::set(10, Timer1Callback); // 500ms period
   MsTimer2::start();
-  
+
   // Inicializa os pinos das rodas e dos sensores, e calibra os sensores de
   // acordo com o que foi lido no piso, para evitar erros
   StartMovement();
   StartSensors();
   CalibrateLineSensor(&black_floor, &white_line);
-  
+
   // Tempo de espera obrigatório
   //delay(3500);
 }
@@ -134,17 +137,19 @@ char Think(volatile sensors_t *valores, volatile char *status){
   Serial.print(valores->line_br);
   Serial.print(" | fl: ");
   Serial.print(valores->line_bl);
+#if ULTRASONIC
   Serial.print(" | us: ");
   Serial.print(valores->us);
+#endif
   Serial.print("\n\n");
 #endif
-  
+
   if(*status == RECUANDO){
 #if DEBUG
   Serial.println("recuando\n");
 #endif
     return RECUANDO;
-    
+
   }else if(*status == AVANCANDO){
 #if DEBUG
   Serial.println("avancando\n");
@@ -164,14 +169,15 @@ char Think(volatile sensors_t *valores, volatile char *status){
   Serial.print("linha atras\n");
 #endif
     return LINHA_BRANCA_ATRAS_ENCONTRADA;
-    
-  // Verifica se o sensor retornou um valor alto, ou seja, 
+
+  // Verifica se o sensor retornou um valor alto, ou seja,
   }else if(valores->ir == IR_FOUND_OBJECT){
 #if DEBUG
   Serial.print("alvo_ir\n");
 #endif
     return ALVO_ENCONTRADO_IR;
 
+#if ULTRASONIC
   }else if((valores->us <= 60) && valores->us > 0){
 #if DEBUG
   Serial.println("alvo_us\n");
@@ -179,7 +185,7 @@ char Think(volatile sensors_t *valores, volatile char *status){
     return ALVO_ENCONTRADO_US;
 
   // Se tudo falhar, deve voltar a procurar o alvo
-  
+#endif
   }else{
 #if DEBUG
   Serial.print("procurando\n");
@@ -201,16 +207,16 @@ void Move(volatile char *estado){
         break;
       }
       *estado = PROCURANDO_ALVO;
-      
+
       break;
 
     case LINHA_BRANCA_ATRAS_ENCONTRADA:
-      MoveFoward();
       *estado = AVANCANDO;
+      MoveLeft();
       if(StateBasedDelay(500, estado, AVANCANDO) == DELAY_FAILURE){
         break;
       }
-      MoveLeft();
+      MoveFoward();
       if(StateBasedDelay(50, estado, AVANCANDO) == DELAY_FAILURE){
         break;
       }
@@ -227,11 +233,13 @@ void Move(volatile char *estado){
       // ALVO_ENCONTRADO
       break;
 
+#if ULTRASONIC
     case ALVO_ENCONTRADO_US:
       MoveFoward();
       while(StateBasedDelay(1000, estado, ALVO_ENCONTRADO_US) != DELAY_FAILURE);
-      
+
       break;
+#endif
 
     // Para procurar o alvo, o robo fara um movimento de zigue-zague no ringue
     case PROCURANDO_ALVO:
@@ -252,13 +260,13 @@ void Move(volatile char *estado){
       if(StateBasedDelay(1000, estado, PROCURANDO_ALVO) == DELAY_FAILURE){
         break;
       }
-      
+
       // Se nao achar nada, procura pra esquerda
       MoveRight();
       if(StateBasedDelay(200, estado, PROCURANDO_ALVO) == DELAY_FAILURE){
         break;
       }
-      
+
       // PROCURANDO_ALVO
       break;
 
@@ -267,3 +275,4 @@ void Move(volatile char *estado){
       break;
   }
 }
+

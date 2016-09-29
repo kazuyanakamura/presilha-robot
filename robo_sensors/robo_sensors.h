@@ -38,6 +38,8 @@ void CheckAllSensors(volatile sensors_t* get_value);
 
 void CalibrateLineSensor(int* black, int* white);
 
+#if ULTRASONIC
 int ReadUltrasonicSensor(char trigg, char echo);
+#endif
 
 #endif
