@@ -34,7 +34,7 @@ void CheckAllSensors(volatile sensors_t* get_value){
 // leitura), para evitar leituras erradas
 void CalibrateLineSensor(int* black, int* white){
   *black = analogRead(LINE_FR_PIN);
-  *white = *black - 300;
+  *white = *black - 250;
 }
 
 int ReadUltrasonicSensor(char trigg, char echo){

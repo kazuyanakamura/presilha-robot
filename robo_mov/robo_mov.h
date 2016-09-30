@@ -33,7 +33,8 @@
 void StartMovement(void);
 void DisableMovement(void);
 void MoveFoward(void);
-void MoveBack(void);
+void MoveBackRight(void);
+void MoveBackLeft(void);
 void MoveRight(void);
 void MoveLeft(void);
 

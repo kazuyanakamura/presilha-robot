@@ -14,18 +14,27 @@
 #define DEBUG_SENSOR_US   0
 #define DEBUG_SENSOR_LN   0
 #define DEBUG_STATUS      0
+#define DEBUG_FOUND_LN    0
+
+// DEFINE DISPATCH EVENTS
+#define DISPATCH_FRONT_RIGHT  1
+#define DISPATCH_FRONT_LEFT   2
+#define DISPATCH_BACK_RIGHT   3
+#define DISPATCH_BACK_LEFT    4
 
 #define DELAY_FAILURE 0
 #define DELAY_SUCCESS 1
 
 // DEFINE STATE MACHINE
-#define LINHA_BRANCA_FRENTE_ENCONTRADA  0
-#define LINHA_BRANCA_ATRAS_ENCONTRADA   1
-#define ALVO_ENCONTRADO_IR              2
-#define PROCURANDO_ALVO                 3
-#define RECUANDO                        4
-#define AVANCANDO                       5
-#define ALVO_ENCONTRADO_US              6
+#define LINHA_BRANCA_FRENTE_ENCONTRADA_LAST_LEFT  0
+#define LINHA_BRANCA_FRENTE_ENCONTRADA_LAST_RIGHT 1
+#define ALVO_ENCONTRADO_IR                        2
+#define PROCURANDO_ALVO                           3
+#define RECUANDO                                  4
+#define AVANCANDO                                 5
+#define ALVO_ENCONTRADO_US                        6
+#define LINHA_BRANCA_ATRAS_ENCONTRADA_LAST_LEFT   7
+#define LINHA_BRANCA_ATRAS_ENCONTRADA_LAST_RIGHT  8
 
 /*******************************************************************************
  *
@@ -54,6 +63,7 @@ void Timer1Callback(void);
 volatile sensors_t sensores;
 volatile char estado_robo;
 
+short int buffer_dispatch_event;
 int black_floor, white_line;
 
 /*******************************************************************************
@@ -79,7 +89,7 @@ void setup(){
   CalibrateLineSensor(&black_floor, &white_line);
 
   // Tempo de espera obrigatório
-  //delay(3500);
+  // delay(3500);
 }
 
 /*******************************************************************************
@@ -155,20 +165,89 @@ char Think(volatile sensors_t *valores, volatile char *status){
     #endif
 
     return AVANCANDO;
-  } else if ((valores->line_fr <= white_line) || (valores->line_fl <= white_line)) {
-    // Verifica se encontrou a linha branca na frente do robo
-    #if DEBUG
-    Serial.println("linha frente");
+
+  } else if (valores->line_fl <= white_line) {
+    #if DEBUG_FOUND_LN
+    Serial.println("found linha frente left");
     #endif
 
-    return LINHA_BRANCA_FRENTE_ENCONTRADA;
+    if (buffer_dispatch_event == DISPATCH_FRONT_RIGHT) {
+      #if DEBUG_FOUND_LN
+      Serial.println("DISPATCH SECOND FRONT LEFT");
+      #endif
+      buffer_dispatch_event = 0;
+
+      return LINHA_BRANCA_FRENTE_ENCONTRADA_LAST_LEFT;
+    } else {
+      #if DEBUG_FOUND_LN
+      Serial.println("DISPATCH FIRST FRONT LEFT");
+      #endif
+      buffer_dispatch_event = DISPATCH_FRONT_LEFT;
+      return PROCURANDO_ALVO;
+    }
+
+  } else if (valores->line_fr <= white_line) {
+    // Verifica se encontrou a linha branca na frente do robo);
+    #if DEBUG_FOUND_LN
+    Serial.println("found linha frente right");
+    #endif
+
+    if (buffer_dispatch_event == DISPATCH_FRONT_LEFT) {
+      #if DEBUG_FOUND_LN
+      Serial.println("DISPATCH SECOND FRONT RIGHT");
+      #endif
+      buffer_dispatch_event = 0;
+
+      return LINHA_BRANCA_FRENTE_ENCONTRADA_LAST_RIGHT;
+    } else {
+      #if DEBUG_FOUND_LN
+      Serial.println("DISPATCH FIRST FRONT RIGHT");
+      #endif
+      buffer_dispatch_event = DISPATCH_FRONT_RIGHT;
+      return PROCURANDO_ALVO;
+    }
+
     // Verifica se encontrou a linha branca atras do robo
-  } else if ((valores->line_br <= white_line) || (valores->line_bl <= white_line)) {
-    #if DEBUG_STATUS
-    Serial.println("linha atras\n");
+  } else if (valores->line_br <= white_line) {
+    #if DEBUG_FOUND_LN
+    Serial.println("found linha atras right");
     #endif
 
-    return LINHA_BRANCA_ATRAS_ENCONTRADA;
+    if (buffer_dispatch_event == DISPATCH_BACK_LEFT) {
+      #if DEBUG_FOUND_LN
+      Serial.println("DISPATCH SECOND BACK RIGHT");
+      #endif
+      buffer_dispatch_event = 0;
+
+      return LINHA_BRANCA_ATRAS_ENCONTRADA_LAST_RIGHT;
+    } else {
+      #if DEBUG_FOUND_LN
+      Serial.println("DISPATCH FIRST BACK RIGHT");
+      #endif
+      buffer_dispatch_event = DISPATCH_BACK_RIGHT;
+      return PROCURANDO_ALVO;
+    }
+
+  } else if (valores->line_bl <= white_line) {
+    #if DEBUG_FOUND_LN
+    Serial.println("found linha atras left");
+    #endif
+
+    if (buffer_dispatch_event == DISPATCH_BACK_RIGHT) {
+      #if DEBUG_FOUND_LN
+      Serial.println("DISPATCH SECOND BACK RIGHT");
+      #endif
+      buffer_dispatch_event = 0;
+
+      return LINHA_BRANCA_ATRAS_ENCONTRADA_LAST_LEFT;
+    } else {
+      #if DEBUG_FOUND_LN
+      Serial.println("DISPATCH FIRST BACK LEFT");
+      #endif
+      buffer_dispatch_event = DISPATCH_BACK_LEFT;
+      return PROCURANDO_ALVO;
+    }
+
     // Verifica se o sensor retornou um valor alto, ou seja,
   } else if(valores->ir == IR_FOUND_OBJECT) {
     #if DEBUG_STATUS
@@ -194,9 +273,10 @@ char Think(volatile sensors_t *valores, volatile char *status){
 
 void Move(volatile char *estado){
   switch(*estado){
-    case LINHA_BRANCA_FRENTE_ENCONTRADA:
+    case LINHA_BRANCA_FRENTE_ENCONTRADA_LAST_LEFT:
       *estado = RECUANDO;
-      MoveLeft();
+      DisableMovement();
+      MoveRight();
       if(StateBasedDelay(250, estado, RECUANDO) == DELAY_FAILURE){
         break;
       }
@@ -208,14 +288,38 @@ void Move(volatile char *estado){
 
       break;
 
-    case LINHA_BRANCA_ATRAS_ENCONTRADA:
+    case LINHA_BRANCA_FRENTE_ENCONTRADA_LAST_RIGHT:
+      *estado = RECUANDO;
+      DisableMovement();
+      MoveLeft();
+      if(StateBasedDelay(250, estado, RECUANDO) == DELAY_FAILURE){
+        break;
+      }
+      DisableMovement();
       MoveFoward();
+      if(StateBasedDelay(500, estado, RECUANDO) == DELAY_FAILURE){
+        break;
+      }
+      *estado = PROCURANDO_ALVO;
+
+      break;
+
+    case LINHA_BRANCA_ATRAS_ENCONTRADA_LAST_LEFT:
+      DisableMovement();
+      MoveBackLeft();
       *estado = AVANCANDO;
       if(StateBasedDelay(500, estado, AVANCANDO) == DELAY_FAILURE){
         break;
       }
-      MoveLeft();
-      if(StateBasedDelay(50, estado, AVANCANDO) == DELAY_FAILURE){
+      *estado = PROCURANDO_ALVO;
+
+      break;
+
+    case LINHA_BRANCA_ATRAS_ENCONTRADA_LAST_RIGHT:
+      DisableMovement();
+      MoveBackRight();
+      *estado = AVANCANDO;
+      if(StateBasedDelay(500, estado, AVANCANDO) == DELAY_FAILURE){
         break;
       }
       *estado = PROCURANDO_ALVO;

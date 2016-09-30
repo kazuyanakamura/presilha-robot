@@ -45,11 +45,18 @@ void MoveFoward(void){
 }
 
 // Esta funcao faz as rodas girarem para tras
-void MoveBack(void){
-  digitalWrite(8, HIGH);
+void MoveBackRight(void){
+  digitalWrite(8, LOW);
   digitalWrite(9, LOW);
   digitalWrite(10, LOW);
   digitalWrite(11, HIGH);
+}
+
+void MoveBackLeft(void){
+  digitalWrite(8, HIGH);
+  digitalWrite(9, LOW);
+  digitalWrite(10, LOW);
+  digitalWrite(11, LOW);
 }
 
 // Esta funcao alterna o giro das rodas, fazendo o robo girar em seu proprio
